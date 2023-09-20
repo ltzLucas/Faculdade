@@ -1,0 +1,12 @@
+Tipo: Carro
+Marca: Toyota
+Modelo: Corolla
+Ano de Fabricação: 2020
+Preço: 25000.0
+Número de Portas: 4
+Tipo: Motocicleta
+Marca: Honda
+Modelo: CBR500R
+Ano de Fabricação: 2021
+Preço: 8000.0
+Cilindradas: 471
