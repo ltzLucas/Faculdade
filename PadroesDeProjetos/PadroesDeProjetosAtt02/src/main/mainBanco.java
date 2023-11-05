@@ -20,12 +20,12 @@ public class mainBanco {
 
     public static void main(String[] args) {
     	
-		ConnectionFactory dataBaseFacotory = new MySQLConnectionFactory();
-		DataBase dataBase = new DataBase(dataBaseFacotory);
+		ConnectionFactory dataBaseFactory = new MySQLConnectionFactory();
+		// ConnectionFactory dataBaseFactory = new OracleConnectionFactory();
+		DataBase dataBase = new DataBase(dataBaseFactory);
 		
-		dataBase.dao.insertEstudante();
 		
-		// Feito esse codigo apenas para teste
+		// Construção e persistência dos dados
 		
         Disciplina matematica = new Disciplina(1, "Matemática", "Técnico", 7.0f, "A");
         Disciplina fisica = new Disciplina(2, "Física", "Técnico", 6.5f, "B");
@@ -34,19 +34,30 @@ public class mainBanco {
         Disciplina pesquisa = new Disciplina(5, "Pesquisa", "Mestrado", 7.2f, "B");
 
         Estudante estudanteTecnico = new Estudante(1, "João", "Técnico", List.of(matematica, fisica));
+		dataBase.dao.insertEstudante(estudanteTecnico);
         Estudante estudanteBacharelado = new Estudante(2, "Maria", "Bacharelado", List.of(historia, literatura));
+		dataBase.dao.insertEstudante(estudanteBacharelado);
         Estudante estudanteMestrado = new Estudante(3, "Carlos", "Mestrado", List.of(pesquisa));
+		dataBase.dao.insertEstudante(estudanteMestrado);
+
+        // Obtenção dos dados via banco de dados
+        List<Estudante> estudantes = dataBase.dao.getEstudantes();
 
         Curso cursoTecnico = new CursoTecnico();
         Curso cursoBacharelado = new CursoBacharelado();
         Curso cursoMestrado = new CursoMestrado();
 
-        boolean aprovadoTecnico = cursoTecnico.verificarAprovacao(estudanteTecnico);
-        boolean aprovadoBacharelado = cursoBacharelado.verificarAprovacao(estudanteBacharelado);
-        boolean aprovadoMestrado = cursoMestrado.verificarAprovacao(estudanteMestrado);
-
-        System.out.println("Estudante de Técnico está aprovado: " + aprovadoTecnico);
-        System.out.println("Estudante de Bacharelado está aprovado: " + aprovadoBacharelado);
-        System.out.println("Estudante de Mestrado está aprovado: " + aprovadoMestrado);
+        for (Estudante estudante : estudantes) {
+            if ("Técnico".equals(estudante.getCurso())) {
+                boolean aprovadoTecnico = cursoTecnico.verificarAprovacao(estudante);
+                System.out.println("Estudante " + estudante.getNome() + " de Técnico está aprovado: " + aprovadoTecnico);
+            } else if ("Bacharelado".equals(estudante.getCurso())) {
+                boolean aprovadoBacharelado = cursoBacharelado.verificarAprovacao(estudante);
+                System.out.println("Estudante " + estudante.getNome() + " de Bacharelado está aprovado: " + aprovadoBacharelado);
+            } else if ("Mestrado".equals(estudante.getCurso())) {
+                boolean aprovadoMestrado = cursoMestrado.verificarAprovacao(estudante);
+                System.out.println("Estudante " + estudante.getNome() + " de Mestrado está aprovado: " + aprovadoMestrado);
+            }
+        }
     }
 }
