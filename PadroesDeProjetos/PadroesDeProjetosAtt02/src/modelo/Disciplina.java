@@ -2,25 +2,18 @@ package modelo;
 
 public class Disciplina {
 	
-	/* Piazada seguinte aqui eu criei algo simples mais pra conseguir fazer a conexao ao banco n levem em consideração
-	 * As Duas classes Disciplina e Estudantes
-	 * 
-	 * Aqui vcs colocam os atributos que vcs acham q vao precisar para fazer a lógica da Disciplina
-	 * 
-	 * 
-	 * 
-	 */
-	
 	private int id;
 	private String nome;
 	private String nivel;
 	private Float mediaAprovacao;
+	private String conceito;
 	
-	public Disciplina(int id, String nome, String nivel, Float mediaAprovacao) {
+	public Disciplina(int id, String nome, String nivel, Float mediaAprovacao, String conceito) {
 		this.id = id;
 		this.nome = nome;
 		this.nivel = nivel;
 		this.mediaAprovacao = mediaAprovacao;
+		this.conceito = conceito;
 	}
 	
 	public int getId() {
@@ -35,13 +28,15 @@ public class Disciplina {
 	public Float getMediaAprovacao() {
 		return mediaAprovacao;
 	}
+	
+	public String getConceito() {
+		return conceito;
+	}
 
 	@Override
 	public String toString() {
-		return " Disciplina [id: " + id + ", nome: " + nome + ", nivel: " + nivel + ", mediaAprovacao: " + mediaAprovacao
-				+ "]";
+		return " Disciplina [id: " + id + ", nome: " + nome + ", nivel: " + nivel + 
+				", mediaAprovacao: " + mediaAprovacao + ", conceito: " + conceito + "]";
 	}
 
-	
-	
 }

@@ -27,9 +27,10 @@ public class DaoOracle implements iDao {
 	public List<Estudante> getEstudantes() {
 		 List<Estudante> estudantes = new ArrayList<>();
 		 try (Connection connection = connectionFactory.getConnection();
-	             PreparedStatement statement = connection.prepareStatement(
-	            		 "SELECT e.id, e.nome, d.id as idDisciplina ,d.nome as Disciplina ,d.curso, d.media_aprovacao FROM estudantes e " +
-	                     "INNER JOIN disciplinas d ON e.id_disciplina = d.id");
+		         PreparedStatement statement = connection.prepareStatement(
+		                 "SELECT e.id, d.id as idDisciplina, e.nome, d.nome as Disciplina, d.nivel, e.curso, d.conceito, d.media_aprovacao" +
+		                         "FROM estudantes e " +
+		                         "INNER JOIN disciplinas d ON e.id_disciplina = d.id");
 	             ResultSet resultSet = statement.executeQuery()) {
 
 	            while (resultSet.next()) {
@@ -37,11 +38,12 @@ public class DaoOracle implements iDao {
 	                int disciplinaId = resultSet.getInt("idDisciplina");
 	                String estudanteNome = resultSet.getString("nome");
 	                String disciplinaNome = resultSet.getString("Disciplina");
-	                String disciplinaCurso = resultSet.getString("curso");
+	                String disciplinaNivel = resultSet.getString("nivel");
+	                String estudanteCurso = resultSet.getString("curso");
+	                String disciplinaConceito = resultSet.getString("conceito");
 	                float mediaAprovação = resultSet.getFloat("media_aprovacao");
 	                
-
-	                Estudante estudante = new Estudante(estudanteId, estudanteNome, new Disciplina(disciplinaId, disciplinaNome, disciplinaCurso, mediaAprovação));
+	                Estudante estudante = new Estudante(estudanteId, estudanteNome, estudanteCurso, (List<Disciplina>) new Disciplina(disciplinaId, disciplinaNome, disciplinaNivel, mediaAprovação, disciplinaConceito));
 	                estudantes.add(estudante);
 	            }
 	        } catch (SQLException e) {

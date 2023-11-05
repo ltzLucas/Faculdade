@@ -1,39 +1,35 @@
 package modelo;
 
+import java.util.List;
+
 public class Estudante {
-	/* Piazada seguinte aqui eu criei algo simples mais pra conseguir fazer a conexao ao banco n levem em consideração
-	 * As Duas classes Disciplina e Estudantes
-	 * 
-	 * Aqui vcs colocam os atributos que vcs acham q vao precisar para fazer a lógica da Estudante
-	 * 
-	 * 
-	 * 
-	 */
-	private int id;
-	private String nome;
-	private Disciplina disciplina;
-	
-	public Estudante(int id, String nome, Disciplina disciplina) {
-		this.id = id;
-		this.nome = nome;
-		this.disciplina = disciplina;
-	}
 
-	public String getNome() {
-		return nome;
-	}
-	public Disciplina getDisciplina() {
-		return disciplina;
-	}
+    private int id;
+    private String nome;
+    private String curso;
+    private List<Disciplina> disciplinas;
+    
+    public Estudante(int id, String nome, String curso, List<Disciplina> disciplinas) {
+        this.id = id;
+        this.nome = nome;
+        this.curso = curso;
+        this.disciplinas = disciplinas;
+    }
 
-	@Override
-	public String toString() {
-		return "Estudante [id: " + id + ", nome: " + nome + ", disciplina: " + disciplina + "]";
-	}
-	
-	
-	
+    public String getNome() {
+        return nome;
+    }
+    
+    public String getCurso() {
+    	return curso;
+    }
+    
+    public List<Disciplina> getDisciplinas() {
+        return disciplinas;
+    }
 
-	
-	
+    @Override
+    public String toString() {
+        return "Estudante [id: " + id + ", nome: " + nome + ", curso: " + curso + ", disciplinas: " + disciplinas + "]";
+    }
 }
