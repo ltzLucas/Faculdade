@@ -9,6 +9,6 @@ public interface iDao {
 	/*
 	 * Aqui vc cria as assinaturas para os metodos DAO, ou seja cria aqui e implementa na DaoOracle e na DaoMySQL
 	 */
-	void insertEstudante();
+	void insertEstudante(Estudante estudante);
 	public List<Estudante> getEstudantes();
 }
