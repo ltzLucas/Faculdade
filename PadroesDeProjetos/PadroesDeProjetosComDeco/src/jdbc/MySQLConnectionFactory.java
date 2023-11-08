@@ -15,8 +15,8 @@ public class MySQLConnectionFactory implements ConnectionFactory {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 //			System.out.println("Usando MySQL");
-//			return DriverManager.getConnection("jdbc:mysql://localhost:3306/meubanco","root","1234");
-			return DriverManager.getConnection("jdbc:mysql://localhost:3306/meubanco","root","StarCrafterL132224!");
+			return DriverManager.getConnection("jdbc:mysql://localhost:3306/meubanco","root","1234");
+//			return DriverManager.getConnection("jdbc:mysql://localhost:3306/meubanco","root","StarCrafterL132224!");
 		}catch(SQLException  | ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		}
