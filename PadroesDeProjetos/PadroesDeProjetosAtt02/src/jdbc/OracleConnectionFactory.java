@@ -12,7 +12,7 @@ public class OracleConnectionFactory implements ConnectionFactory {
 	@Override
 	public Connection getConnection() {
 		try {
-			System.out.println("Usando Oracle");
+//			System.out.println("Usando Oracle");
 			return DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521/xe","C##","123");
 		}catch(SQLException e) {
 			throw new RuntimeException(e);

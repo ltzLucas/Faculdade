@@ -2,6 +2,7 @@ package dao;
 
 import java.util.List;
 
+import modelo.Disciplina;
 import modelo.Estudante;
 
 public interface iDao {
@@ -11,4 +12,6 @@ public interface iDao {
 	 */
 	void insertEstudante(Estudante estudante);
 	public List<Estudante> getEstudantes();
+	
+	Disciplina insertDisciplina(Disciplina disciplina);
 }

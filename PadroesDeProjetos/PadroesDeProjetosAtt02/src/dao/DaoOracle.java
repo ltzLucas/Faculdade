@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,25 +20,32 @@ public class DaoOracle implements iDao {
     }
 
 	@Override
-    public void insertEstudante(Estudante estudante) {
-        try (Connection connection = connectionFactory.getConnection();
-             PreparedStatement statement = connection.prepareStatement(
-                     "INSERT INTO estudantes (nome, curso, id_disciplina) VALUES (?, ?, ?)")) {
+	public void insertEstudante(Estudante estudante) {
+	    try (Connection connection = connectionFactory.getConnection();
+	         PreparedStatement statement = connection.prepareStatement(
+	                 "INSERT INTO estudantes (nome, curso, id_disciplina) VALUES (?, ?, ?)")) {
 
-            // Set the values for the prepared statement
-            statement.setString(1, estudante.getNome());
-            statement.setString(2, estudante.getCurso());
-            statement.setInt(3, estudante.getIdDisciplina());
+	        // Set the values for the prepared statement
+	        statement.setString(1, estudante.getNome());
+	        statement.setString(2, estudante.getCurso());
 
-            // Execute the SQL INSERT statement
-            statement.executeUpdate();
+	        // Assuming the Estudante class has a getDisciplinas method that returns a List<Disciplina>
+	        List<Disciplina> disciplinas = estudante.getDisciplinas();
 
-            System.out.println("Estudante inserido com sucesso.");
+	        // Insert a separate row for each associated Disciplina
+	        for (Disciplina disciplina : disciplinas) {
+	            statement.setInt(3, disciplina.getId()); // Assuming you have a getId method in Disciplina
 
-        } catch (SQLException e) {
-            throw new RuntimeException("Erro ao inserir estudante: " + e.getMessage());
-        }
-    }
+	            // Execute the SQL INSERT statement for each Disciplina
+	            statement.executeUpdate();
+	        }
+
+	        System.out.println("Estudante inserido com sucesso.");
+
+	    } catch (SQLException e) {
+	        throw new RuntimeException("Erro ao inserir estudante: " + e.getMessage());
+	    }
+	}
 
 	@Override
 	public List<Estudante> getEstudantes() {
@@ -67,8 +75,41 @@ public class DaoOracle implements iDao {
 	        }
 	        return estudantes;
 	}
-	
 
+	@Override
+    public Disciplina insertDisciplina(Disciplina disciplina) {
+        try (Connection connection = connectionFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "INSERT INTO disciplinas (nome, nivel, media_aprovacao, conceito) VALUES (?, ?, ?, ?)",
+                     PreparedStatement.RETURN_GENERATED_KEYS)) {
+
+            // Set the values for the prepared statement
+            statement.setString(1, disciplina.getNome());
+            statement.setString(2, disciplina.getNivel());
+            statement.setFloat(3, disciplina.getMediaAprovacao());
+            statement.setString(4, disciplina.getConceito());
+
+            // Execute the SQL INSERT statement and get the generated ID
+            int disciplinaId = -1;
+            if (statement.executeUpdate() > 0) {
+                ResultSet generatedKeys = statement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    disciplinaId = generatedKeys.getInt(1);
+                }
+            }
+
+            if (disciplinaId != -1) {
+                System.out.println("Disciplina inserida com sucesso. ID: " + disciplinaId);
+                // Update the Disciplina object with the generated ID
+                disciplina.setId(disciplinaId);
+                return disciplina;
+            } else {
+                throw new RuntimeException("Erro ao inserir disciplina.");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao inserir disciplina: " + e.getMessage());
+        }
+    }
 
 
 }

@@ -32,6 +32,10 @@ public class Disciplina {
 	public String getConceito() {
 		return conceito;
 	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	@Override
 	public String toString() {
